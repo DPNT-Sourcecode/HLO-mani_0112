@@ -230,13 +230,14 @@ if exist %RECORD_AND_UPLOAD_ZIP% (
 )
 
 if exist record (
-   echo "Starting application"
+   echo "Starting %JARFILE%"
    @echo on
    @rem Execute Record
    cd %APP_HOME%\record\
    "%JAVA_EXE%" %JAVA_OPTS% -jar "%JARFILE%" %PARAM_CONFIG_FILE% %PARAM_STORE_DIR% %PARAM_SOURCECODE_DIR% %CMD_LINE_ARGS%
    cd %APP_HOME%\
    @echo off
+
 ) else (
   echo "Failed to find the 'record' folder, unpacking of the zip file might have failed."
   exit 1
