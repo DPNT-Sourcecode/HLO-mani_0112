@@ -1,6 +1,6 @@
-# tdl-runner-csharp
+# tdl-runner-fsharp
 
-The C# (.Net) challenge runner
+The F# (.Net) challenge runner
 
 ## 1. Requirements
 
@@ -14,7 +14,7 @@ IDE
 
 ## 2. How to start
 
-- Run `nuget restore befaster.sln` at the root of the project 
+- Run `nuget restore befaster.sln`
 - Open solution `befaster.sln`
-- In solution open `BeFaster.App/SendCommandToServer.cs`
+- In solution open `BeFaster.App/SendCommandToServer.fs`
 - Read the comments as documentation, they will guide through the rest of the setup
