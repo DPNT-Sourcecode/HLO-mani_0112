@@ -1,13 +1,12 @@
-# tdl-warmup-python
+# tdl-warmup-scala
 
 
 ## 1. Requirements
 
-- `Python 2.7`
-- `pip`
+- `Scala 2.12.3`
+- `sbt 0.13.8`
 
 ## 2. How to start
 
-- Install dependencies `pip install -r requirements.txt`
-- Open `lib/send_command_to_server.py`
+- Open `src/main/scala/befaster/ConnectToServer.scala`
 - Read the comments as documentation, they will guide through the rest of the setup
