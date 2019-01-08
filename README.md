@@ -1,12 +1,13 @@
-# tdl-warmup-scala
+# tdl-warmup-ruby
 
 
 ## 1. Requirements
 
-- `Scala 2.12.3`
-- `sbt 0.13.8`
+- `Ruby 2.2.2`
+- `bundler`
 
 ## 2. How to start
 
-- Open `src/main/scala/befaster/ConnectToServer.scala`
+- Install dependencies `bundle install`
+- Open `lib/send_command_to_server.rb`
 - Read the comments as documentation, they will guide through the rest of the setup

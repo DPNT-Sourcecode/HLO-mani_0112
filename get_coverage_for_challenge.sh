@@ -8,22 +8,31 @@ set -o pipefail
 SCRIPT_CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 CHALLENGE_ID=$1
-SCOVERAGE_REPORT_XML_FILE="${SCRIPT_CURRENT_DIR}/target/scala-2.12/scoverage-report/scoverage.xml"
-SCALA_CODE_COVERAGE_INFO="${SCRIPT_CURRENT_DIR}/coverage.tdl"
+RUBY_TEST_REPORT_CSV_FILE="${SCRIPT_CURRENT_DIR}/coverage/results.csv"
+RUBY_CODE_COVERAGE_INFO="${SCRIPT_CURRENT_DIR}/coverage.tdl"
 
-( cd ${SCRIPT_CURRENT_DIR} && sbt clean coverage tdlTests coverageReport || true )
+( cd ${SCRIPT_CURRENT_DIR} && \
+    bundle install && \
+    bundle exec rake test || true 1>&2 )
 
-[ -e ${SCALA_CODE_COVERAGE_INFO} ] && rm ${SCALA_CODE_COVERAGE_INFO}
+[ -e ${RUBY_CODE_COVERAGE_INFO} ] && rm ${RUBY_CODE_COVERAGE_INFO}
 
-if [ -f "${SCOVERAGE_REPORT_XML_FILE}" ]; then
-    COVERAGE_OUTPUT=$(xmllint --xpath '//package[@name="befaster.solutions.'${CHALLENGE_ID}'"]/@statement-rate' ${SCOVERAGE_REPORT_XML_FILE} || true)
-    COVERAGE_PERCENT=$(( 0 ))
+if [ -f "${RUBY_TEST_REPORT_CSV_FILE}" ]; then
+    TOTAL_COVERAGE_PERCENTAGE=$(( 0 ))
+    NUMBER_OF_FILES=$(( 0 ))
+
+    COVERAGE_OUTPUT=$(grep "solutions\/${CHALLENGE_ID}\/" ${RUBY_TEST_REPORT_CSV_FILE} || true)
+    RELEVANT_LINES_COL=4
+    LINES_COVERED_COL=5
+
     if [[ ! -z "${COVERAGE_OUTPUT}" ]]; then
-        COVERAGE_PERCENT=$(echo ${COVERAGE_OUTPUT} | tr '".' ' ' | tr -s ' ' | awk '{printf "%.0f", $2}')
-        COVERAGE_PERCENT=$(( ${COVERAGE_PERCENT} + 0 ))
+        RELEVANT_LINES=$(echo "${COVERAGE_OUTPUT}" | cut -d "," -f${RELEVANT_LINES_COL} | jq -s 'add')
+        LINES_COVERED=$(echo "${COVERAGE_OUTPUT}" | cut -d "," -f${LINES_COVERED_COL} | jq -s 'add')
+        TOTAL_COVERAGE_PERCENTAGE=$(( (${LINES_COVERED} * 100) / ${RELEVANT_LINES} ))
     fi
-    echo ${COVERAGE_PERCENT} > ${SCALA_CODE_COVERAGE_INFO}
-    cat ${SCALA_CODE_COVERAGE_INFO}
+
+    echo $((TOTAL_COVERAGE_PERCENTAGE)) > ${RUBY_CODE_COVERAGE_INFO}
+    cat ${RUBY_CODE_COVERAGE_INFO}
     exit 0
 else
     echo "No coverage report was found"
