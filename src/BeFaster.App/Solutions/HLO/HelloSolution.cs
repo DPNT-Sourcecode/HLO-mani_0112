@@ -6,7 +6,11 @@ namespace BeFaster.App.Solutions.HLO
     {
         public static string Hello(string friendName)
         {
-            throw new SolutionNotImplementedException();
+            if friendName == "" then
+                return "Hello, World!"
+            end if
+            return "Hello, " + friendName + "!"
         }
     }
 }
+
