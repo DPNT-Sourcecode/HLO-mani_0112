@@ -6,10 +6,11 @@ namespace BeFaster.App.Solutions.HLO
     {
         public static string Hello(string friendName)
         {
-            if friendName == "" then
-                return "Hello, World!"
-            end if
-            return "Hello, " + friendName + "!"
+            if (friendName == "") {
+                return "Hello, World!";
+            }
+            return "Hello, " + friendName + "!";
         }
     }
 }
+
